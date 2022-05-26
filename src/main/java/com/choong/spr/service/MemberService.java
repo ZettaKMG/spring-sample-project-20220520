@@ -3,6 +3,7 @@ package com.choong.spr.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.choong.spr.domain.MemberDto;
@@ -12,10 +13,14 @@ import com.choong.spr.mapper.MemberMapper;
 public class MemberService {
 	
 	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
 	private MemberMapper mapper;
 
 	public boolean addMember(MemberDto member) {
-
+		String password = member.getPassword();
+		member.setPassword(passwordEncoder.encode(password));
 		return mapper.insertMember(member) == 1;
 	}
 
@@ -44,7 +49,7 @@ public class MemberService {
 	public boolean removeMember(MemberDto dto) {
 		MemberDto member = mapper.selectMemberById(dto.getId());
 		
-		if (member.getPassword().equals(dto.getPassword())) {
+		if (passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
 			return mapper.deleteMemberById(dto.getId()) == 1;
 		}
 		
