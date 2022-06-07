@@ -35,7 +35,7 @@ public class AppListener implements ServletContextListener {
          application.setAttribute("appRoot", application.getContextPath());
          
          /* 복붙 주의, 경로 각자 다름 */
-         String imageUrl = "https://bucket0207-8747919474.s3.ap-northeast-2.amazonaws.com";
+         String imageUrl = "https://bucket0207-zetta.s3.ap-northeast-2.amazonaws.com";
          application.setAttribute("imageUrl", imageUrl);
     }
 	
